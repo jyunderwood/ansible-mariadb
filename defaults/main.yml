@@ -1,0 +1,7 @@
+---
+mariadb_enabled: yes
+mariadb_secure_installation: yes
+mariadb_version: "10.0"
+
+mariadb_keyserver_fingerprint: "0xcbcb082a1bb943db"
+mariadb_mirror: "nyc2.mirrors.digitalocean.com"

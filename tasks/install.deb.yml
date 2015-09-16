@@ -1,0 +1,20 @@
+---
+- name: "add MariaDB apt key"
+  apt_key: url="http://keyserver.ubuntu.com/pks/lookup?op=get&fingerprint=on&search={{ mariadb_keyserver_fingerprint }}"
+           state=present
+
+- name: "add MariaDB repo (Debian)"
+  when: ansible_distribution == "Debian"
+  apt_repository: repo="deb http://{{ mariadb_mirror }}/mariadb/repo/{{ mariadb_version }}/debian {{ ansible_distribution_release }} main" state=present
+
+- name: "add MariaDB repo (Ubuntu)"
+  when: ansible_distribution == "Ubuntu"
+  apt_repository: repo="deb http://{{ mariadb_mirror }}/mariadb/repo/{{ mariadb_version }}/ubuntu {{ ansible_distribution_release }} main" state=present
+
+- name: "install MariaDB"
+  apt: pkg="{{ item }}" update_cache=yes state=latest
+  with_items:
+    - mariadb-server
+    - libmariadbclient-dev
+    - python-mysqldb
+  notify: start mysql
